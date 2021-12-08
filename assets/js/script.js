@@ -8,14 +8,41 @@ var submitButton = $('.submit-button');
 var cityInput = $('.city-input');
 
   
-  fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey, requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
+
 
 // Wait for submit button to be clicked
 submitButton.on("click", grabCity);
 
-function grabCity() {
-    city = cityInput.val()
+// Get City input so that I can get the coordinates
+function grabCity(x) {
+    // see if there's anything submitted
+    if (!cityInput.val()) {
+        return;
+    }
+    x.preventDefault();
+    city = cityInput.val();
+    getCoordinates(city);
+    cityInput.val() = '';
 }
+
+
+// Get city coordinates
+function getCoordinates(city) {
+    fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${APIKey}`)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            if (!data[0]) {
+                alert('Location not found');
+            } else {
+                addCityToHistory(city);
+                getWeather(data[0]);
+            }
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+}
+
+// Get weather 
