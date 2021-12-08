@@ -4,14 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/style.css"/>
+    <title>Weather Dashboard</title>
 </head>
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-info">
-          <a class="navbar-brand mx-auto" href="#">Weather Dashboard</a>
+          <a class="navbar-brand mx-auto text-white" href="#">Weather Dashboard</a>
         </nav>
       </div>
+
+      <div class="row m-5">
+        <div class="col-12 col-md-3 col-lg-3 border-bottom border-dark">
+            <label for="basic-url">Search for a City:</label>
+            <div class="input-group mb-3">
+            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" placeholder="San Diego">
+            </div>
+            <button type="button" class="btn btn-primary btn-lg">Submit</button>
+        </div>
+        <div class="col-12 col-md-9 col-lg-9">.col-6 .col-md-4</div>
+      </div>
+
+      <div class="row m-5">
+        <div class="col-12 col-md-3 col-lg-3">.col-12 .col-md-8</div>
+        <div class="col-12 col-md-9 col-lg-9">.col-6 .col-md-4</div>
+      </div>
+
 </body>
 </html>
