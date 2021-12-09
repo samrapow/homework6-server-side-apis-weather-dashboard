@@ -38,10 +38,8 @@ function getCoordinates(city) {
         })
         .then(function (data) {
             if (!data[0]) {
-                alert('Location not found');
+                alert('Can not find location!');
             } else {
-                // console.log("works");
-                // addCityToHistory(city);
                 console.log(data[0]);
                 console.log(data[0].lat)
                 getWeather(data[0]);
@@ -92,16 +90,6 @@ function showCurrentWeather(city, weather, timezone) {
     var iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
     var iconDescription = weather.weather[0].description || weather[0].main;
 
-    // var card = document.createElement('div');
-    // var cardBody = document.createElement('div');
-    // var heading = document.createElement('h2');
-    // var weatherPicture = document.createElement('img');
-    // var temp = document.createElement('p');
-    // var wind = document.createElement('p');
-    // var humidity = document.createElement('p');
-    // var uv = document.createElement('p');
-    // var uviChangeColor = document.createElement('button');
-
     var card = $('<div>');
     var cardBody = $('<div>');
     var heading = $('<h2>');
@@ -112,20 +100,12 @@ function showCurrentWeather(city, weather, timezone) {
     var weatherPicture = $('<img>');
     var temp = $('<p>');
 
-
-    // card.setAttribute('class', 'current-weather-card');
-    // cardBody.setAttribute('class', 'current-weather-card-body');
     card.append(cardBody);
 
-    // heading.setAttribute('class', 'h3 card-title');
-    // temp.setAttribute('class', 'card-text');
-    // wind.setAttribute('class', 'card-text');
-    // humidity.setAttribute('class', 'card-text');
 
     heading.text(`${city} (${date})`);
     weatherPicture.attr('src', iconUrl);
     weatherPicture.attr('alt', iconDescription);
-    // weatherPicture.setAttribute('class', 'weather-img');
     heading.append(weatherPicture);
     temp.text(`Temp: ${tempF}°F`);
     wind.text(`Wind: ${windMph} MPH`);
@@ -135,6 +115,7 @@ function showCurrentWeather(city, weather, timezone) {
     uv.text('UV Index: ')
     uviChangeColor.addClass('btn', 'btn-sm');
 
+    // get uvi button to change color depending on uv index level
     if (uvi < 3) {
         uviChangeColor.addClass('btn-low');
     } else if (uvi < 7) {
@@ -151,43 +132,38 @@ function showCurrentWeather(city, weather, timezone) {
     todayWeather.append(card);
 }
 
-
+// get future weather
 function showFutureWeather(forecast, timezone) {
     var beginDt = dayjs().tz(timezone).add(1, 'day').startOf('day').unix();
     var endDt = dayjs().tz(timezone).add(6, 'day').startOf('day').unix();
 
-    var headingCol = $('<div>');
     var heading = $('<h4>');
+    var headingCol = $('<div>');
+    
 
-    // headingCol.attr('class', 'col-12');
-    heading.textContent = '5-Day Forecast:';
+    heading.text('Five-Day Forecast:');
     headingCol.append(heading);
 
-    futureWeather.innerHTML = '';
+    futureWeather.html('');
     futureWeather.append(headingCol);
     for (var i = 0; i < forecast.length; i++) {
-        // The api returns forecast data which may include 12pm on the same day and
-        // always includes the next 7 days. The api documentation does not provide
-        // information on the behavior for including the same day. Results may have
-        // 7 or 8 items.
         if (forecast[i].dt >= beginDt && forecast[i].dt < endDt) {
         showFutureWeatherCard(forecast[i], timezone);
         }
     }
 }
 
-// Show future weather
+// Create card for future weather
 function showFutureWeatherCard(forecast, timezone) {
     var forecastDateTime = forecast.dt;
     var iconUrl = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
     var iconDescription = forecast.weather[0].description;
-    console.log(forecast);
     var tempF = forecast.temp.day;
-    console.log(tempF);
     var humidity = forecast.humidity;
+    console.log(humidity);
     var windMph = forecast.wind_speed;
 
-    // Create elements for a card
+
     var col = $('<div>');
     var card = $('<div>');
     var cardBody = $('<div>');
