@@ -177,7 +177,7 @@ function showFutureWeatherCard(forecast, timezone) {
 
     col.append(card);
     card.append(cardBody);
-    cardBody.append(cardTitle, weatherPicture, temp, wind, humidity);
+    cardBody.append(cardTitle, weatherPicture, temp, wind);
 
     cardTitle.text(dayjs.unix(forecastDateTime).tz(timezone).format('M/D/YYYY'));
     weatherPicture.attr('src', iconUrl);
