@@ -7,10 +7,13 @@ var city;
 var submitButton = $('.submit-button');
 var cityInput = $('.city-input');
 var todayWeather = $('.weather-today');
+var futureWeather = $('.forecast');
 var url;
 
   
-
+// Add timezone plugins to day.js
+dayjs.extend(window.dayjs_plugin_utc);
+dayjs.extend(window.dayjs_plugin_timezone);
 
 // Wait for submit button to be clicked
 submitButton.on("click", grabCity);
@@ -73,7 +76,7 @@ function getWeather(place) {
 // Show weather
 function showWeather(city, data) {
     showCurrentWeather(city, data.current, data.timezone);
-    // showFutureWeather(data.daily, data.timezone);
+    showFutureWeather(data.daily, data.timezone);
 }
 
 // Show current weather
@@ -92,7 +95,7 @@ function showCurrentWeather(city, weather, timezone) {
     // var card = document.createElement('div');
     // var cardBody = document.createElement('div');
     // var heading = document.createElement('h2');
-    // var weatherIcon = document.createElement('img');
+    // var weatherPicture = document.createElement('img');
     // var temp = document.createElement('p');
     // var wind = document.createElement('p');
     // var humidity = document.createElement('p');
@@ -102,12 +105,13 @@ function showCurrentWeather(city, weather, timezone) {
     var card = $('<div>');
     var cardBody = $('<div>');
     var heading = $('<h2>');
-    var weatherIcon = $('<img>');
-    var temp = $('<p>');
     var wind = $('<p>');
     var humidity = $('<p>');
     var uv = $('<p>');
     var uviChangeColor = $('<button>');
+    var weatherPicture = $('<img>');
+    var temp = $('<p>');
+
 
     // card.setAttribute('class', 'current-weather-card');
     // cardBody.setAttribute('class', 'current-weather-card-body');
@@ -119,10 +123,10 @@ function showCurrentWeather(city, weather, timezone) {
     // humidity.setAttribute('class', 'card-text');
 
     heading.text(`${city} (${date})`);
-    weatherIcon.attr('src', iconUrl);
-    weatherIcon.attr('alt', iconDescription);
-    // weatherIcon.setAttribute('class', 'weather-img');
-    heading.append(weatherIcon);
+    weatherPicture.attr('src', iconUrl);
+    weatherPicture.attr('alt', iconDescription);
+    // weatherPicture.setAttribute('class', 'weather-img');
+    heading.append(weatherPicture);
     temp.text(`Temp: ${tempF}°F`);
     wind.text(`Wind: ${windMph} MPH`);
     humidity.text(`Humidity: ${humidity} %`);
@@ -145,4 +149,66 @@ function showCurrentWeather(city, weather, timezone) {
 
     todayWeather.html('');
     todayWeather.append(card);
+}
+
+
+function showFutureWeather(forecast, timezone) {
+    var beginDt = dayjs().tz(timezone).add(1, 'day').startOf('day').unix();
+    var endDt = dayjs().tz(timezone).add(6, 'day').startOf('day').unix();
+
+    var headingCol = $('<div>');
+    var heading = $('<h4>');
+
+    // headingCol.attr('class', 'col-12');
+    heading.textContent = '5-Day Forecast:';
+    headingCol.append(heading);
+
+    futureWeather.innerHTML = '';
+    futureWeather.append(headingCol);
+    for (var i = 0; i < forecast.length; i++) {
+        // The api returns forecast data which may include 12pm on the same day and
+        // always includes the next 7 days. The api documentation does not provide
+        // information on the behavior for including the same day. Results may have
+        // 7 or 8 items.
+        if (forecast[i].dt >= beginDt && forecast[i].dt < endDt) {
+        showFutureWeatherCard(forecast[i], timezone);
+        }
+    }
+}
+
+// Show future weather
+function showFutureWeatherCard(forecast, timezone) {
+    var forecastDateTime = forecast.dt;
+    var iconUrl = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
+    var iconDescription = forecast.weather[0].description;
+    console.log(forecast);
+    var tempF = forecast.temp.day;
+    console.log(tempF);
+    var humidity = forecast.humidity;
+    var windMph = forecast.wind_speed;
+
+    // Create elements for a card
+    var col = $('<div>');
+    var card = $('<div>');
+    var cardBody = $('<div>');
+    var cardTitle = $('<h5>');
+    var humidity = $('<p>');
+    var temp = $('<p>');
+    var wind = $('<p>');
+    var weatherPicture = $('<img>');
+
+    
+
+    col.append(card);
+    card.append(cardBody);
+    cardBody.append(cardTitle, weatherPicture, temp, wind, humidity);
+
+    cardTitle.text(dayjs.unix(forecastDateTime).tz(timezone).format('M/D/YYYY'));
+    weatherPicture.attr('src', iconUrl);
+    weatherPicture.attr('alt', iconDescription);
+    temp.text(`Temp: ${tempF} °F`);
+    wind.text(`Wind: ${windMph} MPH`);
+    humidity.text(`Humidity: ${humidity} %`);
+
+    futureWeather.append(col);
 }
