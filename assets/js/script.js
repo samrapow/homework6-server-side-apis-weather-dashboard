@@ -6,7 +6,7 @@ var APIKey = '63b4d64dfe4056a23fee52b7d97ce82d';
 var city;
 var submitButton = $('.submit-button');
 var cityInput = $('.city-input');
-var todayWeather = document.querySelector('.weather-today');
+var todayWeather = $('.weather-today');
 var url;
 
   
@@ -89,50 +89,60 @@ function showCurrentWeather(city, weather, timezone) {
     var iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
     var iconDescription = weather.weather[0].description || weather[0].main;
 
-    var card = document.createElement('div');
-    var cardBody = document.createElement('div');
-    var heading = document.createElement('h2');
-    var weatherIcon = document.createElement('img');
-    var tempEl = document.createElement('p');
-    var windEl = document.createElement('p');
-    var humidityEl = document.createElement('p');
-    var uvEl = document.createElement('p');
-    var uviBadge = document.createElement('button');
+    // var card = document.createElement('div');
+    // var cardBody = document.createElement('div');
+    // var heading = document.createElement('h2');
+    // var weatherIcon = document.createElement('img');
+    // var temp = document.createElement('p');
+    // var wind = document.createElement('p');
+    // var humidity = document.createElement('p');
+    // var uv = document.createElement('p');
+    // var uviChangeColor = document.createElement('button');
+
+    var card = $('<div>');
+    var cardBody = $('<div>');
+    var heading = $('<h2>');
+    var weatherIcon = $('<img>');
+    var temp = $('<p>');
+    var wind = $('<p>');
+    var humidity = $('<p>');
+    var uv = $('<p>');
+    var uviChangeColor = $('<button>');
 
     // card.setAttribute('class', 'current-weather-card');
     // cardBody.setAttribute('class', 'current-weather-card-body');
     card.append(cardBody);
 
     // heading.setAttribute('class', 'h3 card-title');
-    // tempEl.setAttribute('class', 'card-text');
-    // windEl.setAttribute('class', 'card-text');
-    // humidityEl.setAttribute('class', 'card-text');
+    // temp.setAttribute('class', 'card-text');
+    // wind.setAttribute('class', 'card-text');
+    // humidity.setAttribute('class', 'card-text');
 
-    heading.textContent = `${city} (${date})`;
-    weatherIcon.setAttribute('src', iconUrl);
-    weatherIcon.setAttribute('alt', iconDescription);
+    heading.text(`${city} (${date})`);
+    weatherIcon.attr('src', iconUrl);
+    weatherIcon.attr('alt', iconDescription);
     // weatherIcon.setAttribute('class', 'weather-img');
     heading.append(weatherIcon);
-    tempEl.textContent = `Temp: ${tempF}°F`;
-    windEl.textContent = `Wind: ${windMph} MPH`;
-    humidityEl.textContent = `Humidity: ${humidity} %`;
-    cardBody.append(heading, tempEl, windEl, humidityEl);
+    temp.text(`Temp: ${tempF}°F`);
+    wind.text(`Wind: ${windMph} MPH`);
+    humidity.text(`Humidity: ${humidity} %`);
+    cardBody.append(heading, temp, wind, humidity);
 
-    uvEl.textContent = 'UV Index: ';
-    uviBadge.classList.add('btn', 'btn-sm');
+    uv.text('UV Index: ')
+    uviChangeColor.addClass('btn', 'btn-sm');
 
     if (uvi < 3) {
-        uviBadge.classList.add('btn-success');
+        uviChangeColor.addClass('btn-low');
     } else if (uvi < 7) {
-        uviBadge.classList.add('btn-warning');
+        uviChangeColor.addClass('btn-mid');
     } else {
-        uviBadge.classList.add('btn-danger');
+        uviChangeColor.addClass('btn-high');
     }
 
-    uviBadge.textContent = uvi;
-    uvEl.append(uviBadge);
-    cardBody.append(uvEl);
+    uviChangeColor.text(uvi);
+    uv.append(uviChangeColor);
+    cardBody.append(uv);
 
-    todayWeather.innerHTML = '';
+    todayWeather.html('');
     todayWeather.append(card);
 }

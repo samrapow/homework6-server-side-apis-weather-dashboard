@@ -6,3 +6,15 @@
 .btn {
     width: 100%
 }
+
+.btn-low {
+    background-color: green;
+}
+
+.btn-mid {
+    background-color: yellow;
+}
+
+.btn-high {
+    background-color: red;
+}
