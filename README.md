@@ -6,8 +6,8 @@ I created a weather generator.  When the user searches for a city, the cities cu
 
 ## Screenshot
 
-![Code Quiz Screenshot](Assets/screenshot.jpg "Code Quiz Screenshot")
+![Code Quiz Screenshot](assets/screenshot.jpeg "Code Quiz Screenshot")
 
 ## Deployed Application
 
-[Deployed Application](https://samrapow.github.io/homework5-third-party-APIs-work-day-scheduler/Develop/index.html)
+[Deployed Application](https://samrapow.github.io/homework6-server-side-apis-weather-dashboard/)
